@@ -1,7 +1,6 @@
 package neighborchat.messageserver.controller;
 
 import lombok.RequiredArgsConstructor;
-import neighborchat.messageserver.domain.Message;
 import neighborchat.messageserver.domain.dto.MessageRequestDto;
 import neighborchat.messageserver.service.MessageService;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +16,7 @@ public class MessageController {
 
     @PostMapping("/message/{roomId}")
     public String message(@RequestBody MessageRequestDto messageRequestDto, @PathVariable String roomId) {
-        return messageService.sendMessage(new Message(messageRequestDto, roomId));
+        return messageService.sendMessage(MessageRequestDto.convert(messageRequestDto, roomId));
     }
 
 }

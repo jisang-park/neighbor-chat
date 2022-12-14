@@ -1,13 +1,14 @@
 package neighborchat.messageserver.domain;
 
+import lombok.Builder;
 import lombok.Getter;
-import neighborchat.messageserver.domain.dto.MessageRequestDto;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Getter
+@Builder
 @Document("message")
 public class Message {
 
@@ -18,13 +19,5 @@ public class Message {
     private String content;
     private MessageType type;
     private LocalDateTime time;
-
-    public Message(MessageRequestDto messageRequestDto, String roomId) {
-        this.roomId = roomId;
-        this.userId = messageRequestDto.getUserId();
-        this.content = messageRequestDto.getContent();
-        this.type = MessageType.valueOf(messageRequestDto.getType());
-        this.time = LocalDateTime.now();
-    }
 
 }
