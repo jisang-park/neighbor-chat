@@ -1,9 +1,11 @@
 package neighborchat.messageserver.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import neighborchat.messageserver.domain.ChatRoom;
 import neighborchat.messageserver.domain.Message;
 import neighborchat.messageserver.domain.MessageType;
 import neighborchat.messageserver.domain.dto.ChatRoomRequestDto;
+import neighborchat.messageserver.domain.dto.ChatRoomResponseDto;
 import neighborchat.messageserver.domain.dto.MessageResponseDto;
 import neighborchat.messageserver.service.ChatRoomService;
 import neighborchat.messageserver.service.MessageService;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.http.MediaType;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,8 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -98,6 +100,59 @@ class ChatRoomControllerTest {
         mockMvc.perform(get(String.format("/chat-room/%s", roomId)).queryParam("page", "1"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(response1)));
+    }
+
+    @Test
+    void searchWithSubjectTest() throws Exception {
+        LocalDateTime now = LocalDateTime.now();
+        ArrayList<ChatRoom> results = new ArrayList<>();
+
+        ChatRoom chatRoom1 = ChatRoom.builder().leaderId("leaderId").subject("testSubject").name("name1").location(new GeoJsonPoint(123.4567, 37.1234)).createdTime(now).lastChatTime(now).banned(List.of()).build();
+        ChatRoom chatRoom2 = ChatRoom.builder().leaderId("leaderId").subject("testSubject").name("name2").location(new GeoJsonPoint(123.4567, 37.1234)).createdTime(now).lastChatTime(now).banned(List.of()).build();
+
+        results.add(chatRoom1);
+        results.add(chatRoom2);
+
+        List<ChatRoomResponseDto> response = results.stream().map(ChatRoomResponseDto::new).toList();
+
+        when(chatRoomService.searchChatRooms(eq("testSubject"), anyDouble(), anyDouble(), anyDouble())).thenReturn(results);
+
+        mockMvc.perform(get("/chat-room/search")
+                        .param("subject", "testSubject")
+                        .param("longitude", "123.4567")
+                        .param("latitude", "37.1234")
+                        .param("distance", "1.0"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+
+        verify(chatRoomService, never()).searchChatRooms(anyDouble(), anyDouble(), anyDouble());
+        verify(chatRoomService, only()).searchChatRooms("testSubject", 123.4567, 37.1234, 1.0);
+    }
+
+    @Test
+    void searchWithoutSubjectTest() throws Exception {
+        LocalDateTime now = LocalDateTime.now();
+        ArrayList<ChatRoom> results = new ArrayList<>();
+
+        ChatRoom chatRoom1 = ChatRoom.builder().leaderId("leaderId").subject("testSubject").name("name1").location(new GeoJsonPoint(123.4567, 37.1234)).createdTime(now).lastChatTime(now).banned(List.of()).build();
+        ChatRoom chatRoom2 = ChatRoom.builder().leaderId("leaderId").subject("testSubject").name("name2").location(new GeoJsonPoint(123.4567, 37.1234)).createdTime(now).lastChatTime(now).banned(List.of()).build();
+
+        results.add(chatRoom1);
+        results.add(chatRoom2);
+
+        List<ChatRoomResponseDto> response = results.stream().map(ChatRoomResponseDto::new).toList();
+
+        when(chatRoomService.searchChatRooms(anyDouble(), anyDouble(), anyDouble())).thenReturn(results);
+
+        mockMvc.perform(get("/chat-room/search")
+                        .param("longitude", "123.4567")
+                        .param("latitude", "37.1234")
+                        .param("distance", "1.0"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+
+        verify(chatRoomService, only()).searchChatRooms(123.4567, 37.1234, 1.0);
+        verify(chatRoomService, never()).searchChatRooms(any(), anyDouble(), anyDouble(), anyDouble());
     }
 
 }
