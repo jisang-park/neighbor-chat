@@ -8,6 +8,8 @@ import neighborchat.messageserver.service.MessageService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,13 +19,16 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
 
     @PostMapping("/chat-room")
-    public String chatroom(@RequestBody ChatRoomRequestDto chatRoomRequestDto) {
-        return chatRoomService.createChatRoom(ChatRoomRequestDto.convert(chatRoomRequestDto));
+    public Map<String, String> createChatRoom(@RequestBody ChatRoomRequestDto chatRoomRequestDto) {
+        return Map.of("roomId", chatRoomService.createChatRoom(ChatRoomRequestDto.convert(chatRoomRequestDto)));
     }
 
     @GetMapping("/chat-room/{roomId}")
     public List<MessageResponseDto> readMessages(@PathVariable String roomId, @RequestParam(required = false, defaultValue = "0") int page) {
-        return messageService.readMessages(roomId, page);
+        return messageService.readMessages(roomId, page)
+                .stream()
+                .map(MessageResponseDto::convert)
+                .collect(Collectors.toList());
     }
 
 }

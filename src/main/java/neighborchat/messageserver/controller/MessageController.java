@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 public class MessageController {
@@ -15,8 +17,8 @@ public class MessageController {
     private final MessageService messageService;
 
     @PostMapping("/message/{roomId}")
-    public String message(@RequestBody MessageRequestDto messageRequestDto, @PathVariable String roomId) {
-        return messageService.sendMessage(MessageRequestDto.convert(messageRequestDto, roomId));
+    public Map<String, String> sendMessage(@RequestBody MessageRequestDto messageRequestDto, @PathVariable String roomId) {
+        return Map.of("messageId", messageService.sendMessage(MessageRequestDto.convert(messageRequestDto, roomId)));
     }
 
 }

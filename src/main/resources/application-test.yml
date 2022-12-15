@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.35.239:3306/chat_test
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: chat_server_test
+    password: chat_server_test
+  data:
+    mongodb:
+      host: 192.168.35.239
+      port: 27017
+      authentication-database: admin
+      database: chat-server-test
+      username: chat-server-test
+      password: chat-server-test

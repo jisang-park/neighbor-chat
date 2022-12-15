@@ -1,12 +1,18 @@
 package neighborchat.messageserver.domain.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import neighborchat.messageserver.domain.Message;
 import neighborchat.messageserver.domain.MessageType;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MessageRequestDto {
 
     private String userId;
