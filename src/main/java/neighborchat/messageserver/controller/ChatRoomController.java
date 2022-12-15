@@ -25,8 +25,15 @@ public class ChatRoomController {
     }
 
     @GetMapping("/chat-room/{roomId}")
-    public List<MessageResponseDto> readMessages(@PathVariable String roomId,
-                                                 @RequestParam(required = false, defaultValue = "0") int page) {
+    public List<MessageResponseDto> readMessages(@PathVariable String roomId) {
+        return messageService.readMessages(roomId, 0)
+                .stream()
+                .map(MessageResponseDto::new)
+                .toList();
+    }
+
+    @GetMapping(value = "/chat-room/{roomId}", params = "page")
+    public List<MessageResponseDto> readMessages(@PathVariable String roomId, @RequestParam int page) {
         return messageService.readMessages(roomId, page)
                 .stream()
                 .map(MessageResponseDto::new)

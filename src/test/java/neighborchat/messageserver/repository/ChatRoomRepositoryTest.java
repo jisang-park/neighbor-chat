@@ -48,15 +48,7 @@ class ChatRoomRepositoryTest {
 
     @Test
     void saveTest() {
-        ChatRoom chatRoom = ChatRoom.builder()
-                .leaderId("leaderId")
-                .subject("subject")
-                .name("name")
-                .location(new GeoJsonPoint(123.12345, 37.653213))
-                .createdTime(LocalDateTime.now())
-                .lastChatTime(LocalDateTime.now())
-                .banned(new ArrayList<>(Collections.singleton("bannedUserId")))
-                .build();
+        ChatRoom chatRoom = ChatRoom.builder().leaderId("leaderId").subject("subject").name("name").location(new GeoJsonPoint(123.12345, 37.653213)).createdTime(LocalDateTime.now()).lastChatTime(LocalDateTime.now()).banned(List.of("bannedUserId")).build();
 
         ChatRoom savedChatRoom = chatRoomRepository.save(chatRoom);
 

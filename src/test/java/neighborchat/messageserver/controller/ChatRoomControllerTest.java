@@ -91,14 +91,17 @@ class ChatRoomControllerTest {
 
         mockMvc.perform(get(String.format("/chat-room/%s", roomId)))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(response0)));
 
         mockMvc.perform(get(String.format("/chat-room/%s", roomId)).queryParam("page", "0"))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(response0)));
 
         mockMvc.perform(get(String.format("/chat-room/%s", roomId)).queryParam("page", "1"))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(response1)));
     }
 
@@ -123,6 +126,7 @@ class ChatRoomControllerTest {
                         .param("latitude", "37.1234")
                         .param("distance", "1.0"))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(response)));
 
         verify(chatRoomService, never()).searchChatRooms(anyDouble(), anyDouble(), anyDouble());
@@ -149,6 +153,7 @@ class ChatRoomControllerTest {
                         .param("latitude", "37.1234")
                         .param("distance", "1.0"))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(response)));
 
         verify(chatRoomService, only()).searchChatRooms(123.4567, 37.1234, 1.0);
