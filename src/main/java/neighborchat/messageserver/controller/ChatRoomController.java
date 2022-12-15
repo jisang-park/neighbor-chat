@@ -20,14 +20,15 @@ public class ChatRoomController {
 
     @PostMapping("/chat-room")
     public Map<String, String> createChatRoom(@RequestBody ChatRoomRequestDto chatRoomRequestDto) {
-        return Map.of("roomId", chatRoomService.createChatRoom(ChatRoomRequestDto.convert(chatRoomRequestDto)));
+        String roomId = chatRoomService.createChatRoom(ChatRoomRequestDto.convert(chatRoomRequestDto));
+        return Map.of("roomId", roomId);
     }
 
     @GetMapping("/chat-room/{roomId}")
     public List<MessageResponseDto> readMessages(@PathVariable String roomId, @RequestParam(required = false, defaultValue = "0") int page) {
         return messageService.readMessages(roomId, page)
                 .stream()
-                .map(MessageResponseDto::convert)
+                .map(MessageResponseDto::new)
                 .collect(Collectors.toList());
     }
 

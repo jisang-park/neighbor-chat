@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Map;
@@ -19,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(MessageController.class)
-public class MessageControllerTest {
+class MessageControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -32,11 +33,10 @@ public class MessageControllerTest {
 
     @Test
     void sendMessageTest() throws Exception {
-        MessageRequestDto request = MessageRequestDto.builder()
-                .userId("userId")
-                .content("content")
-                .type("MESSAGE")
-                .build();
+        MessageRequestDto request = new MessageRequestDto();
+        ReflectionTestUtils.setField(request, "userId", "userId");
+        ReflectionTestUtils.setField(request, "content", "content");
+        ReflectionTestUtils.setField(request, "type", "MESSAGE");
 
         when(messageService.sendMessage(any())).thenReturn("newMessageId");
 

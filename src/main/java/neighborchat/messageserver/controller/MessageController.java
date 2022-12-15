@@ -18,7 +18,8 @@ public class MessageController {
 
     @PostMapping("/message/{roomId}")
     public Map<String, String> sendMessage(@RequestBody MessageRequestDto messageRequestDto, @PathVariable String roomId) {
-        return Map.of("messageId", messageService.sendMessage(MessageRequestDto.convert(messageRequestDto, roomId)));
+        String messageId = messageService.sendMessage(MessageRequestDto.convert(messageRequestDto, roomId));
+        return Map.of("messageId", messageId);
     }
 
 }

@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Map;
 
@@ -31,13 +32,13 @@ class ChatRoomIntegrationTest {
 
     @Test
     void createChatRoomTest() {
-        ChatRoomRequestDto request = ChatRoomRequestDto.builder()
-                .leaderId("leaderId")
-                .subject("음식")
-                .name("서울시청 근처 맛집")
-                .longitude(126.9779451)
-                .latitude(37.5662952)
-                .build();
+        ChatRoomRequestDto request = new ChatRoomRequestDto();
+        ReflectionTestUtils.setField(request, "leaderId", "leaderId");
+        ReflectionTestUtils.setField(request, "subject", "음식");
+        ReflectionTestUtils.setField(request, "name", "서울시청 근처 맛집");
+        ReflectionTestUtils.setField(request, "longitude", 126.9779451);
+        ReflectionTestUtils.setField(request, "latitude", 37.5662952);
+
         Map<String, String> response = chatRoomController.createChatRoom(request);
 
         Assertions.assertThat(response.get("roomId")).isNotNull();

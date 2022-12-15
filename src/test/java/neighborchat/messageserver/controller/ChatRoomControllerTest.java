@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
@@ -43,13 +44,13 @@ class ChatRoomControllerTest {
 
     @Test
     void createChatRoomTest() throws Exception {
-        ChatRoomRequestDto request = ChatRoomRequestDto.builder()
-                .leaderId("leaderId")
-                .subject("음식")
-                .name("서울시청 근처 맛집")
-                .longitude(126.9779451)
-                .latitude(37.5662952)
-                .build();
+        ChatRoomRequestDto request = new ChatRoomRequestDto();
+        ReflectionTestUtils.setField(request, "leaderId", "leaderId");
+        ReflectionTestUtils.setField(request, "subject", "음식");
+        ReflectionTestUtils.setField(request, "name", "서울시청 근처 맛집");
+        ReflectionTestUtils.setField(request, "longitude", 126.9779451);
+        ReflectionTestUtils.setField(request, "latitude", 37.5662952);
+
         String requestBody = objectMapper.writeValueAsString(request);
 
         when(chatRoomService.createChatRoom(any())).thenReturn("newChatRoomId");
@@ -80,8 +81,8 @@ class ChatRoomControllerTest {
         page1.add(Message.builder().id("message9").userId("userId").roomId(roomId).type(MessageType.IMAGE_URL).time(LocalDateTime.now()).content("content9").build());
         page1.add(Message.builder().id("message10").userId("userId").roomId(roomId).type(MessageType.IMAGE_URL).time(LocalDateTime.now()).content("content10").build());
 
-        List<MessageResponseDto> response0 = page0.stream().map(MessageResponseDto::convert).toList();
-        List<MessageResponseDto> response1 = page1.stream().map(MessageResponseDto::convert).toList();
+        List<MessageResponseDto> response0 = page0.stream().map(MessageResponseDto::new).toList();
+        List<MessageResponseDto> response1 = page1.stream().map(MessageResponseDto::new).toList();
 
         when(messageService.readMessages(roomId, 0)).thenReturn(page0);
         when(messageService.readMessages(roomId, 1)).thenReturn(page1);

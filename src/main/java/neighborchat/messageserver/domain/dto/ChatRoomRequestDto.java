@@ -1,9 +1,6 @@
 package neighborchat.messageserver.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import neighborchat.messageserver.domain.ChatRoom;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 
@@ -11,9 +8,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class ChatRoomRequestDto {
 
     private String leaderId;
