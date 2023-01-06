@@ -5,8 +5,8 @@ import neighborchat.messageserver.domain.ChatRoom;
 import neighborchat.messageserver.domain.Message;
 import neighborchat.messageserver.domain.MessageType;
 import neighborchat.messageserver.domain.dto.ChatRoomRequestDto;
-import neighborchat.messageserver.repository.ChatRoomRepository;
-import neighborchat.messageserver.repository.MessageRepository;
+import neighborchat.messageserver.repository.mongodb.ChatRoomRepository;
+import neighborchat.messageserver.repository.mongodb.MessageRepository;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ActiveProfiles("test")
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 class ChatRoomIntegrationTest {
 
     @Autowired
