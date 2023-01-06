@@ -1,6 +1,7 @@
 package neighborchat.messageserver.repository;
 
 import neighborchat.messageserver.domain.ChatRoom;
+import neighborchat.messageserver.repository.mongodb.ChatRoomRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,8 +14,6 @@ import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @ActiveProfiles("test")

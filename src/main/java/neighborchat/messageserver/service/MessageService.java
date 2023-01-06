@@ -2,7 +2,7 @@ package neighborchat.messageserver.service;
 
 import lombok.RequiredArgsConstructor;
 import neighborchat.messageserver.domain.Message;
-import neighborchat.messageserver.repository.MessageRepository;
+import neighborchat.messageserver.repository.mongodb.MessageRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

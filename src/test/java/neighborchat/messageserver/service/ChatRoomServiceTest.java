@@ -1,7 +1,7 @@
 package neighborchat.messageserver.service;
 
 import neighborchat.messageserver.domain.ChatRoom;
-import neighborchat.messageserver.repository.ChatRoomRepository;
+import neighborchat.messageserver.repository.mongodb.ChatRoomRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

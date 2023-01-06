@@ -12,3 +12,18 @@ spring:
       database: chat-server
       username: chat-server
       password: chat-server
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 238695112778-7o29upp0jn3q6g8721f5oiedu1mhh7d5.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+
+jwt:
+  secret-key: 0a6f06b956bf1f842ca040dca172180c932881be268778f87c22eb69cfcfd746
+  access-token-expire-time: 600000
+  refresh-token-expire-time: 2592000000

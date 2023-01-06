@@ -1,4 +1,4 @@
-package neighborchat.messageserver.repository;
+package neighborchat.messageserver.repository.mongodb;
 
 import neighborchat.messageserver.domain.ChatRoom;
 import org.springframework.data.geo.Distance;
