@@ -7,12 +7,16 @@ import neighborchat.messageserver.domain.MessageType;
 import neighborchat.messageserver.domain.dto.ChatRoomRequestDto;
 import neighborchat.messageserver.domain.dto.ChatRoomResponseDto;
 import neighborchat.messageserver.domain.dto.MessageResponseDto;
+import neighborchat.messageserver.oauth2.JwtAuthenticationFilter;
 import neighborchat.messageserver.service.ChatRoomService;
 import neighborchat.messageserver.service.MessageService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.http.MediaType;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -29,7 +33,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(ChatRoomController.class)
+@AutoConfigureMockMvc(addFilters = false)
+@WebMvcTest(value = ChatRoomController.class,
+        excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthenticationFilter.class))
 class ChatRoomControllerTest {
 
     @Autowired
